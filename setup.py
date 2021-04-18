@@ -6,7 +6,7 @@ README = open(os.path.join(ROOT, 'README.md')).read()
 
 setuptools.setup(
     name="doi",
-    version="2021.4.18",
+    version="2021.4.19",
     author="Donatus Herre",
     author_email="pypi@herre.io",
     license="MIT",
