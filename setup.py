@@ -21,6 +21,11 @@ setuptools.setup(
     packages=["doi"],
     python_requires=">=3.6",
     install_requires=["requests", "tqdm", "ijson"],
+    entry_points={
+      'console_scripts': [
+        'DOI = doi.__main__:main',
+        ],
+    },
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Science/Research",
