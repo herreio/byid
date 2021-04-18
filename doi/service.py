@@ -129,9 +129,9 @@ def event_data_get(doi, email, rows=10):
     return events
 
 
-def event_data_retrieval(dois):
+def event_data_retrieval(dois, email, rows=10):
     print("Requesting data for", len(dois), "DOIs from Event Data!")
-    return cursor(dois, event_data_get)
+    return cursor(dois, event_data_get, email, rows=rows)
 
 
 # //////////////// #
