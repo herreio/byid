@@ -45,20 +45,33 @@ def write_json(path_to_file, json_file_data):
 # /// HTTP GET /// #
 # //////////////// #
 
-
-def fetch_json(url):
+def fetch_url(url):
     try:
         response = requests.get(url)
         if response.status_code == 200:
-            return response.json()
+            return response
         else:
             print("URL", url)
             print("HTTP", response.status_code)
-            return {}
+            return None
     except Exception as e:
         print("request to", url, "failed!")
         print(e)
-        return {}
+        return None
+
+
+def fetch_text(url):
+    response = fetch_url(url)
+    if response:
+        return response.text
+    return ""
+
+
+def fetch_json(url):
+    response = fetch_url(url)
+    if response:
+        return response.json()
+    return {}
 
 
 def cursor(dois, func, *args, **kwargs):
