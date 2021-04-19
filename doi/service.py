@@ -197,9 +197,10 @@ def pubmed_id_get(doi, email, tool="py-pkg-doi"):
     url = pubmed_id_url(doi, email, tool=tool)
     response = fetch_json(url)
     if response and response["status"] == "ok":
-        if len(response["records"]) == 1:
-            if "pmid" in response["records"][0]:
-                return response["records"][0]["pmid"]
+        for record in response["records"]:
+            if "doi" in record and record["doi"] == doi:
+                if "pmid" in record:
+                    return record["pmid"]
 
 
 def pubmed_get(doi, email, tool="py-pkg-doi"):
