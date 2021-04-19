@@ -46,6 +46,7 @@ def write_json(path_to_file, json_file_data):
 # /// HTTP GET /// #
 # //////////////// #
 
+
 def fetch_url(url):
     try:
         response = requests.get(url)

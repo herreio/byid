@@ -5,6 +5,7 @@ from .utils import fetch_text, fetch_json, fetch_xml, cursor, cursor_limited
 # /// DOI AGENCY /// #
 # ////////////////// #
 
+
 def agency_url(doi):
     return "https://doi.org/doiRA/{0}".format(doi)
 
@@ -23,6 +24,7 @@ def agency_retrieval(dois):
 # /// CROSSCITE /// #
 # ///////////////// #
 
+
 def crosscite_url(doi, mime="text/x-bibliography", style="apa", locale="en"):
     url = "https://data.crosscite.org/{0}/{1}".format(mime, doi)
     if mime == "text/x-bibliography":
@@ -38,6 +40,7 @@ def crosscite_get(doi, mime="text/x-bibliography", style="apa", locale="en"):
 def crosscite_retrieval(dois, mime="text/x-bibliography", style="apa", locale="en"):
     print("Requesting data for", len(dois), "DOIs from Crosscite!")
     return cursor(dois, crossref_get, mime=mime, style=style, locale=locale)
+
 
 # ///////////////// #
 # /// ALTMETRIC /// #
@@ -62,6 +65,7 @@ def altmetric_retrieval(dois):
 # /// DIMENSIONS /// #
 # ////////////////// #
 
+
 def dimensions_url(doi):
     return "https://metrics-api.dimensions.ai/doi/{0}".format(doi)
 
@@ -79,6 +83,7 @@ def dimensions_retrieval(dois):
 # //////////////// #
 # /// CROSSREF /// #
 # //////////////// #
+
 
 def crossref_url(doi):
     return "https://api.crossref.org/works/{0}".format(doi)
@@ -102,6 +107,7 @@ def crossref_retrieval(dois):
 # /// DOAJ /// #
 # //////////// #
 
+
 def doaj_url(doi):
     return "https://doaj.org/api/v2/search/articles/doi%3D{0}".format(doi)
 
@@ -122,6 +128,7 @@ def doaj_retrieval(dois):
 # ////////////////// #
 # /// EVENT DATA /// #
 # ////////////////// #
+
 
 def event_data_url(doi, email, rows=10, cursor=None):
     base = "https://api.eventdata.crossref.org/v1/events"
@@ -158,6 +165,7 @@ def event_data_retrieval(dois, email, rows=10):
 # /// OPEN APC /// #
 # //////////////// #
 
+
 def open_apc_url(doi):
     return "https://olap.openapc.net/cube/openapc/aggregate?cut=doi:{0}".format(doi)
 
@@ -170,6 +178,7 @@ def open_apc_get(doi):
 def open_apc_retrieval(dois):
     print("Requesting data for", len(dois), "DOIs from Open APC!")
     return cursor(dois, open_apc_get)
+
 
 # ////////////// #
 # /// PUBMED /// #
@@ -210,6 +219,7 @@ def pubmed_retrieval(dois, email, tool="py-pkg-doi"):
 # /// SEMANTIC SCHOLAR /// #
 # //////////////////////// #
 
+
 def semantic_scholar_url(doi):
     return "https://api.semanticscholar.org/v1/paper/{0}".format(doi)
 
@@ -228,6 +238,7 @@ def semantic_scholar_retrieval(dois):
 # ////////////////////// #
 # /// OPEN CITATIONS /// #
 # ////////////////////// #
+
 
 def opencitations_url(doi, endpoint="metadata"):
     if endpoint not in ["metadata",
@@ -261,6 +272,7 @@ def opencitations_retrieval(dois, endpoint="metadata"):
 # ///////////////// #
 # /// UNPAYWALL /// #
 # ///////////////// #
+
 
 def unpaywall_url(doi, email):
     return "https://api.unpaywall.org/v2/{0}?email={1}".format(doi, email)
