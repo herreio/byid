@@ -81,7 +81,7 @@ def fetch_xml(url):
     if response_text:
         payload = xmltodict.parse(response_text)
         return json.loads(json.dumps(payload))
-    return None
+    return {}
 
 
 def cursor(dois, func, *args, **kwargs):
