@@ -20,7 +20,7 @@ setuptools.setup(
     package_dir={"doi": "doi"},
     packages=["doi"],
     python_requires=">=3.6",
-    install_requires=["requests", "tqdm", "ijson"],
+    install_requires=["requests", "tqdm", "ijson", "xmltodict"],
     entry_points={
       'console_scripts': [
         'DOI = doi.__main__:main',
