@@ -1,4 +1,4 @@
-from .utils import fetch_text, fetch_json, cursor, cursor_limited
+from .utils import fetch_text, fetch_json, fetch_xml, cursor, cursor_limited
 
 
 # ////////////////// #
@@ -170,6 +170,40 @@ def open_apc_get(doi):
 def open_apc_retrieval(dois):
     print("Requesting data for", len(dois), "DOIs from Open APC!")
     return cursor(dois, open_apc_get)
+
+# ////////////// #
+# /// PUBMED /// #
+# ////////////// #
+
+
+def pubmed_url(pmid, email, tool="py-pkg-doi"):
+    return "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id={0}&email={1}&tool={2}&rettype=xml".format(pmid, email, tool)
+
+
+def pubmed_id_url(doi, email, tool="py-pkg-doi"):
+    return "https://www.ncbi.nlm.nih.gov/pmc/utils/idconv/v1.0/?ids={0}&email={1}&tool={2}&format=json".format(doi, email, tool)
+
+
+def pubmed_id_get(doi, email, tool="py-pkg-doi"):
+    url = pubmed_id_url(doi, email, tool=tool)
+    response = fetch_json(url)
+    if response and response["status"] == "ok":
+        if len(response["records"]) == 1:
+            return response["records"][0]["pmid"]
+
+
+def pubmed_get(doi, email, tool="py-pkg-doi"):
+    pmid = pubmed_id_get(doi, email, tool=tool)
+    url = pubmed_url(pmid, email, tool=tool)
+    response = fetch_xml(url)
+    if response and "PubmedArticle" in response["PubmedArticleSet"]:
+        return response["PubmedArticleSet"]["PubmedArticle"]
+
+
+def pubmed_retrieval(dois, email, tool="py-pkg-doi"):
+    print("Requesting data for", len(dois), "DOIs from PubMed!")
+    # rate limit: 3 requests per second (w/o API Key)
+    return cursor_limited(dois, pubmed_get, {'max': 3, 'sec': 1}, email, tool=tool)
 
 
 # //////////////////////// #
