@@ -24,6 +24,7 @@ setuptools.setup(
     entry_points={
       'console_scripts': [
         'DOI = doi.__main__:main',
+        'DOI-RA = doi.__main__:main_ra',
         ],
     },
     classifiers=[
