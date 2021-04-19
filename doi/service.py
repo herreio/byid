@@ -1,4 +1,4 @@
-from .utils import fetch_json, cursor, cursor_limited
+from .utils import fetch_text, fetch_json, cursor, cursor_limited
 
 
 # ////////////////// #
@@ -18,6 +18,26 @@ def agency_retrieval(dois):
     print("Requesting data for", len(dois), "DOIs from DOI Foundation!")
     return cursor(dois, agency_get)
 
+
+# ///////////////// #
+# /// CROSSCITE /// #
+# ///////////////// #
+
+def crosscite_url(doi, mime="text/x-bibliography", style="apa", locale="en"):
+    url = "https://data.crosscite.org/{0}/{1}".format(mime, doi)
+    if mime == "text/x-bibliography":
+        url = "{0}?style={1}&locale={1}".format(url, style, locale)
+    return url
+
+
+def crosscite_get(doi, mime="text/x-bibliography", style="apa", locale="en"):
+    url = crosscite_url(doi, mime, style, locale)
+    return fetch_text(url)
+
+
+def crosscite_retrieval(dois, mime="text/x-bibliography", style="apa", locale="en"):
+    print("Requesting data for", len(dois), "DOIs from Crosscite!")
+    return cursor(dois, crossref_get, mime=mime, style=style, locale=locale)
 
 # ///////////////// #
 # /// ALTMETRIC /// #
