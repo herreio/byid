@@ -3,6 +3,7 @@ import json
 import time
 import ijson
 import requests
+import xmltodict
 from tqdm import tqdm
 from timeit import default_timer as timer
 
@@ -72,6 +73,14 @@ def fetch_json(url):
     if response:
         return response.json()
     return {}
+
+
+def fetch_xml(url):
+    response_text = fetch_text(url)
+    if response_text:
+        payload = xmltodict.parse(response_text)
+        return json.loads(json.dumps(payload))
+    return None
 
 
 def cursor(dois, func, *args, **kwargs):
