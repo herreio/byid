@@ -6,7 +6,7 @@ README = open(os.path.join(ROOT, 'README.md')).read()
 
 setuptools.setup(
     name="doi",
-    version="2021.4.19",
+    version="2021.4.20",
     author="Donatus Herre",
     author_email="pypi@herre.io",
     license="MIT",
@@ -20,10 +20,11 @@ setuptools.setup(
     package_dir={"doi": "doi"},
     packages=["doi"],
     python_requires=">=3.6",
-    install_requires=["requests", "tqdm", "ijson"],
+    install_requires=["requests", "tqdm", "ijson", "xmltodict"],
     entry_points={
       'console_scripts': [
         'DOI = doi.__main__:main',
+        'DOI-RA = doi.__main__:main_ra',
         ],
     },
     classifiers=[

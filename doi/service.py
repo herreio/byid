@@ -1,9 +1,10 @@
-from .utils import fetch_json, cursor, cursor_limited
+from .utils import fetch_text, fetch_json, fetch_xml, cursor, cursor_limited
 
 
 # ////////////////// #
 # /// DOI AGENCY /// #
 # ////////////////// #
+
 
 def agency_url(doi):
     return "https://doi.org/doiRA/{0}".format(doi)
@@ -17,6 +18,28 @@ def agency_get(doi):
 def agency_retrieval(dois):
     print("Requesting data for", len(dois), "DOIs from DOI Foundation!")
     return cursor(dois, agency_get)
+
+
+# ///////////////// #
+# /// CROSSCITE /// #
+# ///////////////// #
+
+
+def crosscite_url(doi, mime="text/x-bibliography", style="apa", locale="en"):
+    url = "https://data.crosscite.org/{0}/{1}".format(mime, doi)
+    if mime == "text/x-bibliography":
+        url = "{0}?style={1}&locale={1}".format(url, style, locale)
+    return url
+
+
+def crosscite_get(doi, mime="text/x-bibliography", style="apa", locale="en"):
+    url = crosscite_url(doi, mime, style, locale)
+    return fetch_text(url)
+
+
+def crosscite_retrieval(dois, mime="text/x-bibliography", style="apa", locale="en"):
+    print("Requesting data for", len(dois), "DOIs from Crosscite!")
+    return cursor(dois, crossref_get, mime=mime, style=style, locale=locale)
 
 
 # ///////////////// #
@@ -42,6 +65,7 @@ def altmetric_retrieval(dois):
 # /// DIMENSIONS /// #
 # ////////////////// #
 
+
 def dimensions_url(doi):
     return "https://metrics-api.dimensions.ai/doi/{0}".format(doi)
 
@@ -59,6 +83,7 @@ def dimensions_retrieval(dois):
 # //////////////// #
 # /// CROSSREF /// #
 # //////////////// #
+
 
 def crossref_url(doi):
     return "https://api.crossref.org/works/{0}".format(doi)
@@ -82,6 +107,7 @@ def crossref_retrieval(dois):
 # /// DOAJ /// #
 # //////////// #
 
+
 def doaj_url(doi):
     return "https://doaj.org/api/v2/search/articles/doi%3D{0}".format(doi)
 
@@ -102,6 +128,7 @@ def doaj_retrieval(dois):
 # ////////////////// #
 # /// EVENT DATA /// #
 # ////////////////// #
+
 
 def event_data_url(doi, email, rows=10, cursor=None):
     base = "https://api.eventdata.crossref.org/v1/events"
@@ -138,6 +165,7 @@ def event_data_retrieval(dois, email, rows=10):
 # /// OPEN APC /// #
 # //////////////// #
 
+
 def open_apc_url(doi):
     return "https://olap.openapc.net/cube/openapc/aggregate?cut=doi:{0}".format(doi)
 
@@ -152,9 +180,48 @@ def open_apc_retrieval(dois):
     return cursor(dois, open_apc_get)
 
 
+# ////////////// #
+# /// PUBMED /// #
+# ////////////// #
+
+
+def pubmed_url(pmid, email, tool="py-pkg-doi"):
+    return "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id={0}&email={1}&tool={2}&rettype=xml".format(pmid, email, tool)
+
+
+def pubmed_id_url(doi, email, tool="py-pkg-doi"):
+    return "https://www.ncbi.nlm.nih.gov/pmc/utils/idconv/v1.0/?ids={0}&email={1}&tool={2}&format=json".format(doi, email, tool)
+
+
+def pubmed_id_get(doi, email, tool="py-pkg-doi"):
+    url = pubmed_id_url(doi, email, tool=tool)
+    response = fetch_json(url)
+    if response and response["status"] == "ok":
+        for record in response["records"]:
+            if "doi" in record and record["doi"] == doi:
+                if "pmid" in record:
+                    return record["pmid"]
+
+
+def pubmed_get(doi, email, tool="py-pkg-doi"):
+    pmid = pubmed_id_get(doi, email, tool=tool)
+    if pmid:
+        url = pubmed_url(pmid, email, tool=tool)
+        response = fetch_xml(url)
+        if response and "PubmedArticle" in response["PubmedArticleSet"]:
+            return response["PubmedArticleSet"]["PubmedArticle"]
+
+
+def pubmed_retrieval(dois, email, tool="py-pkg-doi"):
+    print("Requesting data for", len(dois), "DOIs from PubMed!")
+    # rate limit: 3 requests per second (w/o API Key)
+    return cursor_limited(dois, pubmed_get, {'max': 3, 'sec': 1}, email, tool=tool)
+
+
 # //////////////////////// #
 # /// SEMANTIC SCHOLAR /// #
 # //////////////////////// #
+
 
 def semantic_scholar_url(doi):
     return "https://api.semanticscholar.org/v1/paper/{0}".format(doi)
@@ -174,6 +241,7 @@ def semantic_scholar_retrieval(dois):
 # ////////////////////// #
 # /// OPEN CITATIONS /// #
 # ////////////////////// #
+
 
 def opencitations_url(doi, endpoint="metadata"):
     if endpoint not in ["metadata",
@@ -207,6 +275,7 @@ def opencitations_retrieval(dois, endpoint="metadata"):
 # ///////////////// #
 # /// UNPAYWALL /// #
 # ///////////////// #
+
 
 def unpaywall_url(doi, email):
     return "https://api.unpaywall.org/v2/{0}?email={1}".format(doi, email)
