@@ -1,1 +1,1 @@
-# DOI-based Data Retrieval
+# Fetch metadata records by identifier.
