@@ -12,7 +12,7 @@ setuptools.setup(
     license="MIT",
     description="Fetch metadata records by identifier.",
     long_description=README,
-    long_description_content_type="text/markdown",
+    long_description_content_type="text/x-rst",
     url="https://github.com/herreio/byid",
     project_urls={
         "Bug Tracker": "https://github.com/herreio/byid/issues",
