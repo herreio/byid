@@ -6,7 +6,7 @@ README = open(os.path.join(ROOT, 'README.md')).read()
 
 setuptools.setup(
     name="byid",
-    version="2021.4.23",
+    version="2021.4.24",
     author="Donatus Herre",
     author_email="pypi@herre.io",
     license="MIT",
@@ -17,9 +17,7 @@ setuptools.setup(
     project_urls={
         "Bug Tracker": "https://github.com/herreio/byid/issues",
     },
-    package_dir={"byid": "byid"},
-    packages=["byid"],
-    python_requires=">=3.6",
+    packages=setuptools.find_packages(),
     install_requires=["requests", "tqdm", "ijson", "xmltodict"],
     entry_points={
       'console_scripts': [
