@@ -6,7 +6,7 @@ README = open(os.path.join(ROOT, 'README.md')).read()
 
 setuptools.setup(
     name="byid",
-    version="2021.4.24",
+    version="2021.5.8",
     author="Donatus Herre",
     author_email="pypi@herre.io",
     license="MIT",
@@ -28,7 +28,6 @@ setuptools.setup(
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Science/Research",
-        "Programming Language :: Python",
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
         "License :: OSI Approved :: MIT License"
