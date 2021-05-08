@@ -2,7 +2,7 @@ import os
 import setuptools
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(ROOT, 'README.md')).read()
+README = open(os.path.join(ROOT, 'README.rst')).read()
 
 setuptools.setup(
     name="byid",
