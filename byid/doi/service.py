@@ -1,4 +1,4 @@
-from .utils import fetch_text, fetch_json, fetch_xml, cursor, cursor_limited
+from ..utils import fetch_text, fetch_json, fetch_xml, cursor, cursor_limited
 
 
 # ////////////////// #
