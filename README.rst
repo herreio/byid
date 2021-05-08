@@ -1,4 +1,4 @@
 byid
 ====
 
-Fetch metadata records by identifier.
+Retrieve metadata records by providing a unique identifier.
