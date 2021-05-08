@@ -1,2 +1,4 @@
-Fetch metadata records by identifier.
-=====================================
+byid
+====
+
+Retrieve metadata records by providing a unique identifier.
